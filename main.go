@@ -220,6 +220,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err = (&rabbitmqcontrollers.Reconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RabbitMq")
+		os.Exit(1)
+	}
+
 	// Acquire environmental defaults and initialize operator defaults with them
 	memcachedv1.SetupDefaults()
 	redisv1.SetupDefaults()
@@ -255,6 +263,10 @@ func main() {
 		}
 		if err = (&networkv1.IPSet{}).SetupWebhookWithManager(mgr); err != nil {
 			setupLog.Error(err, "unable to create webhook", "webhook", "IPSet")
+			os.Exit(1)
+		}
+		if err = (&rabbitmqv1beta1.RabbitMq{}).SetupWebhookWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create webhook", "webhook", "RabbitMq")
 			os.Exit(1)
 		}
 		checker = mgr.GetWebhookServer().StartedChecker()

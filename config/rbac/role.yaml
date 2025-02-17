@@ -356,6 +356,32 @@ rules:
 - apiGroups:
   - rabbitmq.openstack.org
   resources:
+  - rabbitmqs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rabbitmq.openstack.org
+  resources:
+  - rabbitmqs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.openstack.org
+  resources:
+  - rabbitmqs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rabbitmq.openstack.org
+  resources:
   - transporturls
   verbs:
   - create
